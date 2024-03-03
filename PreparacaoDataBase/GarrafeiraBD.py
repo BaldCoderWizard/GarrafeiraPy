@@ -1,6 +1,9 @@
 import pymysql
 
 class Database:
+
+    db_iniciada = False
+
     def __init__(
         self,
         host="localhost",
@@ -21,7 +24,9 @@ class Database:
     def create_database(self, database_name):
         try:
             self.cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{database_name}`;")
-            print(f"A Base de Dados `{database_name}` foi criada ou ja existe.")
+            if not Database.db_iniciada:
+                print(f"A Base de Dados `{database_name}` foi criada ou ja existe.")
+                Database.db_iniciada = True
         except pymysql.Error as e:
             print(f"Erro ao criar a Base de Dados `{database_name}`: {e}")
 
