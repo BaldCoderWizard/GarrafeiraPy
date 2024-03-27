@@ -1,0 +1,50 @@
+
+CREATE TABLE Regiao (
+    IdRegiao INT AUTO_INCREMENT PRIMARY KEY,
+    Regiao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Produtor (
+    IdProdutor INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL,
+    IdRegiao INT,
+    Telefone VARCHAR(20),
+    Website VARCHAR(255),
+    Email VARCHAR(255),
+    FOREIGN KEY (IdRegiao) REFERENCES Regiao(IdRegiao)
+);
+
+CREATE TABLE Casta (
+    IdCasta INT AUTO_INCREMENT PRIMARY KEY,
+    Casta VARCHAR(255) NOT NULL,
+    Descricao TEXT
+);
+
+CREATE TABLE TipoVinho (
+    IdTipoVinho INT AUTO_INCREMENT PRIMARY KEY,
+    TipoVinho VARCHAR(255) NOT NULL,
+    Descricao TEXT
+);
+
+CREATE TABLE Vinho (
+    IdVinho INT AUTO_INCREMENT PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL,
+    Ano YEAR NOT NULL,
+    IdProdutor INT,
+    IdRegiao INT,
+    IdTipoVinho INT,
+    Preco DECIMAL(10, 2) NOT NULL,
+    Quantidade INT NOT NULL,
+    FOREIGN KEY (IdProdutor) REFERENCES Produtor(IdProdutor) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (IdRegiao) REFERENCES Regiao(IdRegiao) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (IdTipoVinho) REFERENCES TipoVinho(IdTipoVinho) ON DELETE CASCADE ON UPDATE CASCADE
+    -- A relação com Casta será gerenciada pela tabela de associação VinhoCasta
+);
+
+CREATE TABLE VinhoCasta (
+    idVinhoCasta INT AUTO_INCREMENT PRIMARY KEY,
+    idVinho INT,
+    idCasta INT,
+    FOREIGN KEY (idVinho) REFERENCES Vinho(IdVinho) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (idCasta) REFERENCES Casta(IdCasta) ON DELETE CASCADE ON UPDATE CASCADE
+);
